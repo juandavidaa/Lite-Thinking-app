@@ -1,0 +1,20 @@
+.logo{
+    font-family: 'pacifico';
+}
+.main-container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+div.ripple-wave{
+    height: unset !important;
+    width: unset !important;
+}
+
+.login-image{
+    height: 100%;
+    width: -webkit-fill-available;
+}

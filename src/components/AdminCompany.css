@@ -1,0 +1,7 @@
+.admin-content{
+    left: 250px;
+    position: absolute;
+    width: calc(100vw - 250px);
+    margin-top: 20px;
+    padding: 20px;
+}
