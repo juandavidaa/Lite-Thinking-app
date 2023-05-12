@@ -4,32 +4,32 @@ import { useNavigate, Link } from "react-router-dom";
 import CompanyService from "../services/CompanyService";
 import "./AdminCompany.css";
 const AdminCompany = () => {
-  const companyService = new CompanyService();
-
-  const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const fetchCompanies = () => {
-    companyService.isAdmin().then((response) => {
-      const status = response.status;
-      if (status === 200) {
-        response.json().then((data) => {
-          setIsAdmin(data.admin === 1);
-          companyService
-            .getCompanies()
-            .then((response) => response.json())
-            .then((data) => setCompanies(data));
-        });
-      } else {
-        navigate("/");
-      }
-    });
-  };
-
+  const navigate = useNavigate();
   useEffect(() => {
+    const companyService = new CompanyService();
+
+    const fetchCompanies = () => {
+      companyService.isAdmin().then((response) => {
+        const status = response.status;
+        if (status === 200) {
+          response.json().then((data) => {
+            setIsAdmin(data.admin === 1);
+            companyService
+              .getCompanies()
+              .then((response) => response.json())
+              .then((data) => setCompanies(data));
+          });
+        } else {
+          navigate("/");
+        }
+      });
+    };
+
     fetchCompanies();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="container">

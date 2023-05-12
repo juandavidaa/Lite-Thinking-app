@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 class CompanyService {
   constructor() {
     this.url = "http://localhost:8000/api/";

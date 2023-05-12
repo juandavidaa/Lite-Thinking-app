@@ -1,37 +1,27 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
-
+import { useReactToPrint } from "react-to-print";
 import CompanyService from "../services/CompanyService";
 
 const Products = (props) => {
   const companyService = new CompanyService();
 
+  const componentPDF = useRef();
+
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
   let { nit } = useParams();
-  const fetchProducts = () => {
-    companyService.isAdmin().then((response) => {
-      const status = response.status;
-      if (status === 200) {
-        response.json().then((data) => {
-          setIsAdmin(data.admin === 1);
-          companyService
-            .getProducts(nit)
-            .then((response) => response.json())
-            .then((data) => setProducts(data));
-        });
-      } else {
-        navigate("/");
-      }
-    });
-  };
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current,
+  });
+
   const deleteProduct = (id, index) => {
     companyService.isAdmin().then((response) => {
       const status = response.status;
       if (status === 200) {
         response.json().then((data) => {
-          setIsAdmin(data.admin === 1);
           companyService.deleteProduct(id).then((response) => {
             if (response.status === 200) {
               response.json().then((data) => {
@@ -50,6 +40,21 @@ const Products = (props) => {
     });
   };
   useEffect(() => {
+    const fetchProducts = () => {
+      companyService.isAdmin().then((response) => {
+        const status = response.status;
+        if (status === 200) {
+          response.json().then((data) => {
+            companyService
+              .getProducts(nit)
+              .then((response) => response.json())
+              .then((data) => setProducts(data));
+          });
+        } else {
+          navigate("/");
+        }
+      });
+    };
     fetchProducts();
   }, []);
 
@@ -60,10 +65,16 @@ const Products = (props) => {
           <Link to={`/admin/addProduct/${nit}`}>
             <button className="btn btn-primary btn-lg">+</button>
           </Link>
+          <button className="btn btn-secondary btn-lg" onClick={generatePDF}>
+            <i className="bi bi-printer"></i>
+          </button>
+          <button className="btn btn-success btn-lg">
+            <i className="bi bi-send"></i>
+          </button>
         </div>
 
         {products.length > 0 && (
-          <div className="table-responsive">
+          <div className="table-responsive" ref={componentPDF}>
             <table className="table table-hover  ">
               <thead>
                 <tr>
