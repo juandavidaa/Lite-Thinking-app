@@ -1,6 +1,6 @@
 class CompanyService {
   constructor() {
-    this.url = "https://lite-thinking-api-production.up.railway.app/api/";
+    this.url = "http://localhost:8000/api/";
     this.myHeaders = new Headers();
     this.myHeaders.append("Accept", "application/json");
     this.myHeaders.append("Content-Type", "application/json");
@@ -55,6 +55,12 @@ class CompanyService {
     this.requestOptions.method = "POST";
     this.requestOptions.body = JSON.stringify(formData);
     return await this.makeRequest(`admin/products`);
+  }
+
+  async deleteCompany(nit) {
+    this.requestOptions.method = "DELETE";
+
+    return await this.makeRequest(`admin/companies/${nit}`);
   }
 }
 export default CompanyService;

@@ -40,7 +40,7 @@ function App() {
     <ProSidebarProvider>
       <AdminTemplate alert={toggleAlert} />
       <div className="admin-content">
-        <AdminCompany />
+        <AdminCompany alert={toggleAlert} close={hideAlert} />
       </div>
     </ProSidebarProvider>
   );

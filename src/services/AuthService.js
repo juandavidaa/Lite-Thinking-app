@@ -1,6 +1,6 @@
 class AuthService {
   constructor() {
-    this.url = "https://lite-thinking-api-production.up.railway.app/api/auth/";
+    this.url = "http://localhost:8000/api/auth/";
     this.myHeaders = new Headers();
     this.myHeaders.append("Accept", "application/json");
     this.myHeaders.append("Content-Type", "application/json");

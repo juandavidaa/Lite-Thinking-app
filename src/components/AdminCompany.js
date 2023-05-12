@@ -3,14 +3,35 @@ import { useNavigate, Link } from "react-router-dom";
 
 import CompanyService from "../services/CompanyService";
 import "./AdminCompany.css";
-const AdminCompany = () => {
+const AdminCompany = (props) => {
   const [companies, setCompanies] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    const companyService = new CompanyService();
+  const companyService = new CompanyService();
 
+  const deleteCompany = (id, index) => {
+    companyService.isAdmin().then((response) => {
+      const status = response.status;
+      if (status === 200) {
+        response.json().then((data) => {
+          companyService.deleteCompany(id).then((response) => {
+            if (response.status === 200) {
+              response.json().then((data) => {
+                props.alert("success", "product was deleted");
+                navigate("/admin/home");
+              });
+            } else {
+              props.alert("danger", "Couldn't delete product");
+            }
+          });
+        });
+      } else {
+        props.alert("danger", "Couldn't delete product");
+      }
+    });
+  };
+  useEffect(() => {
     const fetchCompanies = () => {
       companyService.isAdmin().then((response) => {
         const status = response.status;
@@ -29,7 +50,8 @@ const AdminCompany = () => {
     };
 
     fetchCompanies();
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="container">
@@ -65,7 +87,10 @@ const AdminCompany = () => {
                         <Link to={`/admin/company/${company.nit}`}>
                           <i className="bi bi-list-ol text-primary fs-4"></i>
                         </Link>
-                        <i className="bi bi-trash text-danger fs-4"></i>
+                        <i
+                          className="bi bi-trash text-danger fs-4"
+                          onClick={() => deleteCompany(company.nit)}
+                        ></i>
                       </td>
                     )}
                   </tr>
