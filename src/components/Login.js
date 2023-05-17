@@ -52,21 +52,24 @@ function Login(props) {
   const handleSubmitLogin = (e) => {
     e.preventDefault();
     props.close();
-    authService.login(datosLogin).then((response) => {
-      if (response.status !== 200) {
-        response = response.json().then((response) => {
-          props.alert("danger", response[Object.keys(response)[0]]);
-        });
-      } else {
-        response = response.json().then((response) => {
-          localStorage.setItem("access_token", response.access_token);
-          localStorage.setItem("token_type", response.token_type);
-          localStorage.setItem("expires_in", response.expires_in);
+    authService
+      .login(datosLogin)
+      .then((response) => {
+        if (response.status !== 200) {
+          response = response.json().then((response) => {
+            props.alert("danger", response[Object.keys(response)[0]]);
+          });
+        } else {
+          response = response.json().then((response) => {
+            localStorage.setItem("access_token", response.access_token);
+            localStorage.setItem("token_type", response.token_type);
+            localStorage.setItem("expires_in", response.expires_in);
 
-          navigate("admin/home");
-        });
-      }
-    });
+            navigate("admin/home");
+          });
+        }
+      })
+      .catch((err) => console.error("error: ", err));
   };
 
   const handleSubmitRegister = (e) => {

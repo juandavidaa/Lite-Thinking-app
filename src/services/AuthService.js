@@ -4,6 +4,7 @@ class AuthService {
     this.myHeaders = new Headers();
     this.myHeaders.append("Accept", "application/json");
     this.myHeaders.append("Content-Type", "application/json");
+    this.myHeaders.append("Access-Control-Allow-Origin", "*");
     this.requestOptions = {
       headers: this.myHeaders,
     };
