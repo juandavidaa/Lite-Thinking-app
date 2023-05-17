@@ -1,6 +1,6 @@
 class CompanyService {
   constructor() {
-    this.url = "http://localhost:8000/api/";
+    this.url = "https://lite-thinking-api-production.up.railway.app/api/";
     this.myHeaders = new Headers();
     this.myHeaders.append("Accept", "application/json");
     this.myHeaders.append("Content-Type", "application/json");
