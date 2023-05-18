@@ -1,21 +1,16 @@
-class AuthService {
+import ServiceInterface from "./ServiceInteface";
+
+class AuthService extends ServiceInterface {
   constructor() {
-    this.url = "https://lite-thinking-api-production.up.railway.app/api/auth/";
-    this.myHeaders = new Headers();
-    this.myHeaders.append("Accept", "application/json");
-    this.myHeaders.append("Content-Type", "application/json");
-    this.requestOptions = {
-      headers: this.myHeaders,
-    };
+    super();
+    this.prefix = "auth/";
   }
 
-  async makeRequest(url) {
-    const response = await fetch(`${this.url}${url}`, this.requestOptions);
-    //const response = await request.json();
-
-    return response;
-  }
-
+  /**
+   * Call to the api to login an user an get a Token
+   * @param {FormData} formData
+   * @returns {Promise}
+   */
   async login(formData) {
     this.requestOptions.method = "POST";
     this.requestOptions.body = JSON.stringify(formData);
@@ -23,6 +18,26 @@ class AuthService {
     return await this.makeRequest("login");
   }
 
+  /**
+   * Call to the api to get User data an then be able to verify if an user is an admin or a guest
+   * @returns {Promise}
+   */
+  async isAdmin() {
+    this.myHeaders.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("access_token")}`
+    );
+    this.requestOptions.method = "GET";
+    const response = await this.makeRequest("me");
+
+    return response;
+  }
+
+  /**
+   * Call to the api to create a new user as a guest
+   * @param {FormData} formData
+   * @returns {Promise}
+   */
   async register(formData) {
     this.requestOptions.method = "POST";
     this.requestOptions.body = JSON.stringify(formData);

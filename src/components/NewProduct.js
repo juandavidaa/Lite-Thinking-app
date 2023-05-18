@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CompanyService from "../services/CompanyService";
 import { useNavigate, useParams } from "react-router-dom";
+import ProductService from "../services/ProductService";
 
 const NewProduct = (props) => {
   const { nit } = useParams();
@@ -11,7 +11,9 @@ const NewProduct = (props) => {
     image_url: "",
   });
   const navigate = useNavigate();
-  const companyService = new CompanyService();
+
+  const productService = new ProductService();
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const newData = { ...datos, [name]: value };
@@ -21,7 +23,7 @@ const NewProduct = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     props.close();
-    companyService.createProduct(datos, nit).then((response) => {
+    productService.createProduct(datos, nit).then((response) => {
       const status = response.status;
       if (status !== 200) {
         response = response.json().then((response) => {

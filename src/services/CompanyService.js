@@ -1,66 +1,59 @@
-class CompanyService {
+import ServiceInterface from "./ServiceInteface";
+
+class CompanyService extends ServiceInterface {
   constructor() {
-    this.url = "https://lite-thinking-api-production.up.railway.app/api/";
-    this.myHeaders = new Headers();
-    this.myHeaders.append("Accept", "application/json");
-    this.myHeaders.append("Content-Type", "application/json");
+    super();
+    this.prefix = "admin/companies";
     this.myHeaders.append(
       "Authorization",
       `Bearer ${localStorage.getItem("access_token")}`
     );
-    this.requestOptions = {
-      headers: this.myHeaders,
-    };
   }
 
-  async makeRequest(url) {
-    const response = await fetch(`${this.url}${url}`, this.requestOptions);
-    //const response = await request.json();
-
-    return response;
-  }
-
+  /**
+   * Call to the api to get the product list by company's nit
+   * @param {Number} nit
+   * @returns {Promise}
+   */
   async getProducts(nit) {
     this.requestOptions.method = "GET";
-    return await this.makeRequest(`admin/companies/${nit}`);
-  }
-  async isAdmin() {
-    this.requestOptions.method = "GET";
-    const response = await this.makeRequest("auth/me");
 
-    return response;
+    return await this.makeRequest(`/${nit}`);
   }
+
+  /**
+   * Call to the api to get the list of companies
+   * @returns {Promise}
+   */
   async getCompanies() {
     this.requestOptions.method = "GET";
-    const response = await this.makeRequest("companies");
+    const response = await this.makeRequest();
 
     return response;
   }
 
+  /**
+   * Call to the api to create a new company
+   * @param {FormData} formData
+   * @returns {Promise}
+   */
   async createCompany(formData) {
     this.requestOptions.method = "POST";
     this.requestOptions.body = JSON.stringify(formData);
 
-    return await this.makeRequest("admin/companies");
+    return await this.makeRequest();
   }
 
-  async deleteProduct(id) {
-    this.requestOptions.method = "DELETE";
-
-    return await this.makeRequest(`admin/products/${id}`);
-  }
-
-  async createProduct(formData, nit) {
-    formData.company_nit = nit;
-    this.requestOptions.method = "POST";
-    this.requestOptions.body = JSON.stringify(formData);
-    return await this.makeRequest(`admin/products`);
-  }
-
+  /**
+   * Call to the api to delete a company by company's nit
+   * @param {Number} nit
+   * @returns {Promise}
+   */
   async deleteCompany(nit) {
     this.requestOptions.method = "DELETE";
 
-    return await this.makeRequest(`admin/companies/${nit}`);
+    return await this.makeRequest(`/${nit}`);
   }
 }
+
 export default CompanyService;

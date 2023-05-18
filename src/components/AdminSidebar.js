@@ -33,11 +33,6 @@ const AdminSidebar = () => {
           }}
         >
           <MenuItem component={<Link to="/admin/home" />}> Home</MenuItem>
-          <MenuItem component={<Link to="/admin/orders" />}> Orders</MenuItem>
-          <MenuItem component={<Link to="/admin/new-order" />}>
-            {" "}
-            Make a new Order{" "}
-          </MenuItem>
         </Menu>
       </Sidebar>
     </div>

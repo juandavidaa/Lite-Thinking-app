@@ -3,15 +3,16 @@ import { useNavigate, Link } from "react-router-dom";
 
 import CompanyService from "../services/CompanyService";
 import "./AdminCompany.css";
+import AuthService from "../services/AuthService";
 const AdminCompany = (props) => {
   const [companies, setCompanies] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
   const companyService = new CompanyService();
-
+  const authService = new AuthService();
   const deleteCompany = (id, index) => {
-    companyService.isAdmin().then((response) => {
+    authService.isAdmin().then((response) => {
       const status = response.status;
       if (status === 200) {
         response.json().then((data) => {
@@ -33,7 +34,7 @@ const AdminCompany = (props) => {
   };
   useEffect(() => {
     const fetchCompanies = () => {
-      companyService.isAdmin().then((response) => {
+      authService.isAdmin().then((response) => {
         const status = response.status;
         if (status === 200) {
           response.json().then((data) => {
