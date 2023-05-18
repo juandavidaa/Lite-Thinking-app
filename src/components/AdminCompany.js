@@ -19,16 +19,19 @@ const AdminCompany = (props) => {
           companyService.deleteCompany(id).then((response) => {
             if (response.status === 200) {
               response.json().then((data) => {
-                props.alert("success", "product was deleted");
+                props.alert("success", "Company was deleted");
                 navigate("/admin/home");
               });
             } else {
-              props.alert("danger", "Couldn't delete product");
+              props.alert(
+                "danger",
+                "Please remove company's products before deleting"
+              );
             }
           });
         });
       } else {
-        props.alert("danger", "Couldn't delete product");
+        navigate("/");
       }
     });
   };
